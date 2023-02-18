@@ -1,15 +1,16 @@
 def stock_picker(stock_prices)
-    #Check for the lowest and highest price in the array
-    sell = stock_prices.max
-    buy = stock_prices.min
+    profit = Array.new
+    days = Array.new(40) {[]}
 
-    #Places order and sells for the highest profit only if the day of lowest price is before the one with the highest
-    if stock_prices.index(buy) < stock_prices.index(sell)
-        profit = sell - buy
-        puts "For the highest profit of $#{sell} - $#{buy} = $#{profit}, buy stocks at day #{stock_prices.index(buy)} and sell at #{stock_prices.index(sell)}."
-    #else
-
+    stock_prices.each_with_index do |buy, b_index|
+      stock_prices.each_with_index do |sell, s_index|
+        if sell - buy > 0 && b_index < s_index
+          profit.push(sell - buy)
+          days[profit.length-1].push(b_index).push(s_index)
+        end
+      end
     end
+    puts "For a profit of $#{profit.max}, do transactions at days: #{days[profit.index(profit.max)]}."
 end
 
 stock_prices = Array.new(9) {rand(1..40)}
